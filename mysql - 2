@@ -1,0 +1,125 @@
+create database joinsinDB;
+use joinsinDB;
+
+create table Employee(
+id int primary key, 
+fname varchar(50),
+lname varchar(50),
+Age int,
+emailID varchar(100),
+PhoneNo int,
+City varchar(50)
+);
+
+Insert into Employee values 
+(1, 'Aman', 'Proto', 32, 'aman@gmail.com',	898, 'Delhi'),
+(2, 'Yagya', 'Narayan', 44, 'yagya@gmail.com', 222, 'Palam'),
+(3, 'Rahul', 'BD', 22, 'rahul@gmail.com', 444, 'Kolkata'),
+(4, 'Jatin', 'Hermit', 31, 'jatin@gmail.com', 666, 'Flaipur'),
+(5, 'PK', 'Pandey', 21, 'pk@gmail.com', 555, 'Jaipur');
+
+create table Clients(
+id int primary key,
+first_name varchar(255),
+last_name varchar(255),
+age int,
+emailID varchar(50),
+PhoneNo int(10),
+City varchar(50),
+empID int,
+foreign key (empID) references Employee(id)
+);
+
+insert into clients values 
+(1, 'Mac', 'Rogers', 47, 'mac@hotmail.oom', 333, 'Kolkata', 3),
+(2, 'Max', 'Poirier', 27, 'max@gmail.oom', 222, 'Kolkata', 3),
+(3, 'Peter', 'Jain', 24, 'peter@abc.oom', 111, 'Delhi', 1),
+(4, 'Sushant', 'Aggarwal', 23, 'sushant@yahoo.com', 45454, 'Hyderabad', 5),
+(5, 'Pratap', 'Singh', 36, 'p@xyz.com', 77767, 'Mumbai', 2);
+
+Create table Project(
+id Int primary key, 
+empID int, 
+name varchar(255), 
+startdate datetime,
+clientID int, 
+Foreign key (clientID) references Clients(id),
+foreign key (empID) references Employee(id) 
+);
+
+Insert into project values
+(1,1,'A','2021-04-21',3),
+(2,2,'B','2021-03-12',1),
+(3,3,'C','2021-01-16',5),
+(4,3,'D','2021-04-27',2),
+(5,5,'E','2021-05-01',4);
+
+select * from project;
+
+-- INNER JOIN
+
+-- Enlist all the employees ID's, names along with the Project allocated to them. 
+select e.id, e.fname, p.id as 'project id', p.name from employee as e
+inner join project as p on e.id = p.empid;
+
+-- Fetch out all the employee ID's and their contact detail who have been working
+-- from Jaipur with the clients name working in Hyderabad.
+select e.id, e.fname, e.PhoneNo, c.first_name from employee as e
+inner join clients as c on e.id = c.empID where e.city = 'Jaipur' and c.city = 'Hyderabad';
+
+-- LEFT JOIN
+-- Fetch out each project allocated to each employee.
+select * from Employee as e 
+left join project as p on e.id = p.empID;
+
+-- RIGHT JOIN
+-- List out all the projects along with the employee's name and their respective allocated email ID.
+select p.id, p.name, e.fname , e.emailID from  employee as e  
+Right Join project as p on p.empID = e.id;
+
+--  CROSS JOIN
+-- List out all the combinations possible for the employee's name and projects that can exist.
+select e.fname, e.lname, p.id, p.name from employee as e
+cross join project as p;
+
+-- Q) can we use join without using join keyword
+-- yes
+
+select e.id, e.fname, p.id as 'project id', p.name from employee as e , project as p where e.id = p.empid;
+
+-- -------------------- --
+-- sub-queries
+
+-- WHERE clause same table
+-- employees with age > 30
+select * from employee where age in (select age from employee where age > 30);
+
+-- WHERE clause different table
+-- emp details working in more than 1 project.
+select * from employee where id in (
+select empID from project group by empID having count(empID) > 1
+);
+
+-- single value subquery
+-- emp details having age > avg(age)
+select * from Employee where age > (select avg(age) from Employee);
+
+-- FROM clause — derived tables
+-- select max age person whose first name contains 'a'
+select max(age) from (select * from Employee where fname like '%a%') AS temp;
+
+
+-- VIEW --------------------------------------------------
+SELECT * FROM Employee;
+
+-- creating a view
+CREATE VIEW custom_view AS SELECT fname, age FROM Employee;
+
+-- VIEWING FROM VIEW
+SELECT * FROM custom_view; 
+
+-- ALTERING THE VIEW
+ALTER VIEW custom_view AS SELECT fname, lname, age FROM Employee;
+
+-- DROPING THE VIEW
+DROP VIEW IF EXISTS custom_view;
