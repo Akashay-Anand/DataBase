@@ -83,7 +83,7 @@ select instr(first_name, 'b') from worker where first_name = "Amitabh";
 select rtrim(first_name) from worker;
 
 -- Q-7. Write an SOL query to print the DEPARTMENT from Worker table after removing white spaces from the left side.
-select ltrim(first_name) from worker;
+select ltrim(department) from worker;
 
 -- Q—8. Write an SOL query that fetches the unique values Of DEPARTMENT from Worker table and prints its length.
 select length(department) from worker group by department;
