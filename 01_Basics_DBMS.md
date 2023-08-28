@@ -4,7 +4,8 @@ descriptions of things, etc.
 
 Q) Types of Data
 > a. Quantitative
-> > Numerical form
+> > Numerical form      
+
 > b. Qualitative
 > >  Descriptive, but not numerical.
 
@@ -81,9 +82,10 @@ Q) What is DBMS
 # DBMS Application Architectures
 
 > architecture which defines how the client system will interact with DB  
-> Client machines, on which remote DB users work, and server machines on which DB system runs.  
+- Client machines, on which remote DB users work.
+-  server machines on which DB system runs.  
 
-### T1 Architecture
+### Tier-1 ( T1 ) Architecture
 > The client, server & DB all present on the same machine.  
 > Ex: project in which database is present in our local system  
 
